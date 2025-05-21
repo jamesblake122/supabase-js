@@ -1,0 +1,36 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient('SUPABASE_URL', 'SUPABASE_KEY');
+
+// Funktion för att skapa eller logga in en demo-användare
+async function createDemoUser() {
+  const { data, error } = await supabase.auth.signUp({
+    email: 'demo@example.com',
+    password: 'säkertLösenord123!',
+    options: {
+      data: { role: 'demo' } // Lägg till metadata för att markera som demo-användare
+    }
+  });
+
+  if (error) {
+    console.error('Fel vid skapande av demo-användare:', error.message);
+    return;
+  }
+
+  console.log('Demo-användare skapad:', data.user);
+}
+
+// Logga in demo-användare
+async function loginDemoUser() {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: 'demo@example.com',
+    password: 'säkertLösenord123!'
+  });
+
+  if (error) {
+    console.error('Fel vid inloggning:', error.message);
+    return;
+  }
+
+  console.log('Demo-användare inloggad:', data.user);
+}
